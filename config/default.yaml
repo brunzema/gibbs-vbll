@@ -1,0 +1,36 @@
+defaults:
+  - _self_
+  - model: vbll_delta
+  - environment: spiral
+  - dysts_system: lorenz
+  - training: multi_step_factored_crps
+  - path: local
+  - logger: csv_logger
+
+#############################################################################################
+# General config
+#############################################################################################
+sweep_name: "first_run"
+additional_sweep_name: ""
+
+suffix: ""
+name: ${model.name}/${environment.name}/${training.name}/${seed}
+
+save_dir: ${path.base_path}/results/${sweep_name}/${name}
+seed: 42
+mode: base  # execution mode: base, force, clean, check
+
+# verbose_level: ${training.verbose}
+
+post_eval:
+  enabled: true
+  rollout_steps: 60      # steps per test rollout
+  n_test_states: 100     # number of random initial states
+  n_noisy_samples: 100   # stochastic samples per state (model + noisy GT)
+
+hydra:
+  run:
+    dir: ${path.base_path}/outputs/${now:%Y-%m-%d_%H-%M-%S}
+  sweep:
+    dir: ${path.base_path}/outputs/${now:%Y-%m-%d_%H-%M-%S}
+    subdir: ${hydra.job.num}

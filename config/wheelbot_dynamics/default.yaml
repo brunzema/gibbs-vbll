@@ -1,0 +1,27 @@
+# @package _global_
+defaults:
+  - _self_
+  - env: racing
+  - model: vbll_default
+  - loss: multi_step_factored_crps
+  - path: local
+
+seed: 42
+sweep_name: default
+verbose: true
+print_every: 10
+
+name: ${env.name}/${loss.name}_${loss.training.horizon}/${seed}
+save_dir: ${path.base_path}/results/wheelbot_dynamics/${sweep_name}/${name}
+
+output:
+  model_filename_single_step: wheelbot_racing_vbll_model.pkl
+  model_filename_multi_step: wheelbot_racing_multistep_vbll_model.pkl
+
+hydra:
+  run:
+    dir: ${path.base_path}/outputs/wheelbot_dynamics/${now:%Y-%m-%d_%H-%M-%S}
+  sweep:
+    dir: ${path.base_path}/outputs/wheelbot_dynamics/${now:%Y-%m-%d_%H-%M-%S}
+    subdir: ${hydra.job.num}
+

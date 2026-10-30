@@ -1,0 +1,41 @@
+# @package _global_
+
+# Comparative evaluation profile for sweeps trained with +experiment=paper.
+# Evaluation is run once per environment because runs/eval.py reconstructs one
+# environment from the saved models in each invocation, e.g.
+#   python runs/eval.py --config-name eval_variable_speed_limit_cycle sweep_name=<sweep_name>
+#   EVALUATION=paper INCLUDE_DYSTS=1 bash scripts/cluster_eval_all_envs.sh <sweep_name>
+
+sweep_name: ???
+seed: 42
+results_root: "results"
+eval_environment: "variable_speed_limit_cycle"
+
+models:
+  - path: "${results_root}/${sweep_name}/vbll_delta/${eval_environment}/single_step_elbo/${seed}/vbll_model.pkl"
+    label: "s-NLL"
+  - path: "${results_root}/${sweep_name}/vbll_delta/${eval_environment}/single_step_elbo_hbatch/${seed}/vbll_model.pkl"
+    label: "s-NLL-HB"
+  - path: "${results_root}/${sweep_name}/vbll_delta/${eval_environment}/multi_step_elbo/${seed}/vbll_model.pkl"
+    label: "m-NLL"
+  - path: "${results_root}/${sweep_name}/vbll_delta/${eval_environment}/multi_step_kde/${seed}/vbll_model.pkl"
+    label: "m-KDE"
+  - path: "${results_root}/${sweep_name}/vbll_delta/${eval_environment}/multi_step_factored_crps/${seed}/vbll_model.pkl"
+    label: "m-CRPS"
+  - path: "${results_root}/${sweep_name}/vbll_delta/${eval_environment}/multi_step_ar_crps/${seed}/vbll_model.pkl"
+    label: "m-arCRPS"
+  - path: "${results_root}/${sweep_name}/vbll_delta/${eval_environment}/multi_step_ar_elbo/${seed}/vbll_model.pkl"
+    label: "m-arNLL"
+
+eval:
+  rollout_steps: 120
+  n_test_states: 80
+  n_vis_states: 4
+  n_noisy_samples: 80
+  seed: ${seed}
+  save_dir: "results/eval/${sweep_name}/${eval_environment}"
+  skip_missing_models: false
+
+hydra:
+  run:
+    dir: .

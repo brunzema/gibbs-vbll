@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.ruff_cache/
+
+# Experiment outputs
+results/
+figures/
+outputs/
+multirun/
+logs/
+*.log
+.submitit/
+*.pkl
+
+# Data (see README for how to obtain the Wheelbot racing data)
+data/
+
+# Hydra / matplotlib caches
+.hydra/
+.mplconfig/
+
+# OS / editors
+.DS_Store
+.vscode/
+.idea/
+
+# Local plot scripts that are not part of the repository
+plots/local/

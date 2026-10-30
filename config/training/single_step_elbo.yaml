@@ -1,0 +1,35 @@
+# Training configuration for VBLL model
+name: single_step_elbo
+
+# General training parameters
+n_epochs: 300
+learning_rate: 1.0e-3
+regularization_weight: 1.0  # Scaled by 1/n_train in runs/train.py
+batch_size: 64
+weight_decay: 1.0e-4
+clip_grad_norm: 1.0
+verbose: true
+print_every: 10
+
+# Device selection
+device: cuda  # Options: cuda, cpu
+
+# Multi-step specific parameters (only used when training_mode=multi_step)
+multi_step:
+  horizon: 35  # Prediction horizon for multi-step training
+  n_samples: 20  # Number of posterior samples during training
+  n_val_samples: 100  # Number of validation samples
+  
+  # Gamma tempering schedule
+  gamma_schedule:
+    type: constant
+    gamma_init: 1.0
+    gamma_final: 1.0
+    k: 10.0  # Steepness parameter for sigmoid schedule
+    transition_fraction: 0.67  # Fraction of training for gamma transition (2/3)
+
+# Logging
+log_dir: logs  # Base directory for logs (will be appended with timestamp)
+
+# Validation
+val_every: 10  # Validate every N epochs

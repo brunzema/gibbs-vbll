@@ -1,0 +1,16 @@
+name: wheelbot_racing
+
+data_root: data/wheelbot_racing
+train_dir: train
+val_dir: val
+test_dir: test
+
+prepare_split: false
+split_seed: 42
+val_fraction: 0.15
+test_fraction: 0.15
+
+dt: 0.006
+trim_start: 2.0
+trim_end: 2.0
+

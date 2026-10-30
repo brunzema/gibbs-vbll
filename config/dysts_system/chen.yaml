@@ -1,0 +1,9 @@
+name: chen
+system_name: Chen
+dt: 0.005
+parameters: null
+
+initial_state_bounds:
+  - [-21.03, 20.77]
+  - [-22.37, 22.09]
+  - [10.69, 36.36]

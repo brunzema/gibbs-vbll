@@ -1,0 +1,34 @@
+# Swimmer environment configuration
+name: swimmer
+normalize_states: false
+
+environment:
+  _target_: src.environments.SwimmerDynamics
+  dt: 0.1
+  noise_std: 0.01
+  alpha: 0.7    
+  eta: 1.0      
+  kappa: 4.71238898038469    # 1.5 * pi
+
+# State space bounds for initial state sampling
+initial_state_bounds:
+  - [-1.5, 1.5]  # Adjust based on swimmer state space
+  - [-1.5, 1.5]
+
+# ── Data / dataset settings ────────────────────────────────────────────────
+data:
+  trajectories:
+    n_trajectories: 300    # total trajectories generated
+    traj_length: 50        # steps per trajectory (~2.5 orbits at ω₀=2 rad/s)
+    test_fraction: 0.0     # no held-out test split; all data used for train/val
+    val_fraction: 0.2      # 20 % validation
+    deterministic: false
+
+  single_step:
+    n_future: 1
+    n_past: 1
+    skip_n: 1
+
+  multi_step:
+    n_past: 1
+    skip_n: 1              # dense windows; horizon comes from training config

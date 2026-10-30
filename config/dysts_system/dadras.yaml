@@ -1,0 +1,9 @@
+name: dadras
+system_name: Dadras
+dt: 0.005
+parameters: null
+
+initial_state_bounds:
+  - [-10.36, 12.68]
+  - [-9.48, 8.79]
+  - [-5.67, 6.16]

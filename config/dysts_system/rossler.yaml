@@ -1,0 +1,9 @@
+name: rossler
+system_name: Rossler
+dt: 0.02
+parameters: null
+
+initial_state_bounds:
+  - [-15.0, 15.0]
+  - [-15.0, 15.0]
+  - [0.0, 35.0]

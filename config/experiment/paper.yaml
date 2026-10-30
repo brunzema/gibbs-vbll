@@ -1,0 +1,174 @@
+# @package _global_
+
+# Experiment profile used in the paper (data, horizon and evaluation settings
+# per environment).
+# hbatch_size = 64 * horizon is the batch size of
+# the single_step_elbo_hbatch baseline, which matches the number of
+# transitions per gradient step of the multi-step losses.
+#
+# Select the environment separately, for example:
+#   python runs/train.py \
+#     +experiment=paper \
+#     environment=swimmer \
+#     training=single_step_elbo_hbatch \
+#     model=vbll_delta
+#
+# Dysts example:
+#   python runs/train.py \
+#     +experiment=paper \
+#     environment=dysts \
+#     dysts_system=lorenz \
+#     training=multi_step_ar_elbo \
+#     model=vbll_delta
+
+seed: 42
+
+paper:
+  environments:
+    spiral:
+      normalize_states: false
+      n_trajectories: 300
+      traj_length: 50
+      horizon: 40
+      hbatch_size: 2560
+      skip_n: 1
+      gamma_type: constant
+      rollout_steps: 60
+      n_test_states: 100
+      n_noisy_samples: 100
+
+    swimmer:
+      normalize_states: false
+      n_trajectories: 300
+      traj_length: 50
+      horizon: 40
+      hbatch_size: 2560
+      skip_n: 1
+      gamma_type: constant
+      rollout_steps: 60
+      n_test_states: 100
+      n_noisy_samples: 100
+
+    variable_speed_limit_cycle:
+      normalize_states: false
+      n_trajectories: 300
+      traj_length: 50
+      horizon: 40
+      hbatch_size: 2560
+      skip_n: 1
+      gamma_type: constant
+      rollout_steps: 60
+      n_test_states: 100
+      n_noisy_samples: 100
+
+    bifurcating_limit_cycle:
+      normalize_states: false
+      n_trajectories: 150
+      traj_length: 110
+      horizon: 40
+      hbatch_size: 2560
+      skip_n: 1
+      gamma_type: constant
+      rollout_steps: 60
+      n_test_states: 100
+      n_noisy_samples: 100
+
+    glycolytic_oscillator:
+      normalize_states: true
+      n_trajectories: 500
+      traj_length: 100
+      horizon: 40
+      hbatch_size: 2560
+      skip_n: 20
+      gamma_type: constant
+      rollout_steps: 200
+      n_test_states: 50
+      n_noisy_samples: 50
+
+    # All dysts systems used the same training/data/evaluation settings. Their
+    # integration steps and initial-state bounds remain defined by the selected
+    # dysts_system config.
+    dysts_lorenz: &dysts_settings
+      normalize_states: true
+      n_trajectories: 400
+      traj_length: 120
+      horizon: 60
+      hbatch_size: 3840
+      skip_n: 30
+      gamma_type: constant
+      rollout_steps: 120
+      n_test_states: 50
+      n_noisy_samples: 50
+    dysts_rossler: *dysts_settings
+    dysts_thomas: *dysts_settings
+    dysts_chen: *dysts_settings
+    dysts_chua: *dysts_settings
+    dysts_dadras: *dysts_settings
+    dysts_aizawa: *dysts_settings
+    dysts_rucklidge: *dysts_settings
+    dysts_sprott_a: *dysts_settings
+    dysts_sprott_b: *dysts_settings
+    dysts_nose_hoover: *dysts_settings
+    dysts_lorenz84: *dysts_settings
+    dysts_rabinovich_fabrikant: *dysts_settings
+
+  # Losses whose batch size differs from the default of 64.
+  batch_size_by_training:
+    single_step_elbo_hbatch: ${paper.environments.${environment.name}.hbatch_size}
+
+# Shared architecture for all environments.
+model:
+  model:
+    hidden_dim: 64
+    num_hidden_layers: 3
+    feature_dim: 32
+    activation_fn: mish
+    prior_scale: 1.0
+    wishart_scale: 0.1
+
+training:
+  n_epochs: 300
+  learning_rate: 1.0e-3
+  regularization_weight: 1.0
+  batch_size: ${oc.select:'paper.batch_size_by_training.${training.name}',64}
+  weight_decay: 1.0e-4
+  clip_grad_norm: 1.0
+  verbose: true
+  print_every: 10
+
+  multi_step:
+    horizon: ${paper.environments.${environment.name}.horizon}
+    n_samples: 10
+    n_val_samples: 100
+    gamma_schedule:
+      type: ${paper.environments.${environment.name}.gamma_type}
+      gamma_init: 1.0
+      gamma_final: 1.0
+      k: 10.0
+      transition_fraction: 0.67
+
+  log_dir: logs
+  val_every: 10
+
+environment:
+  normalize_states: ${paper.environments.${environment.name}.normalize_states}
+  data:
+    trajectories:
+      n_trajectories: ${paper.environments.${environment.name}.n_trajectories}
+      traj_length: ${paper.environments.${environment.name}.traj_length}
+      test_fraction: 0.0
+      val_fraction: 0.2
+      deterministic: false
+    single_step:
+      n_future: 1
+      n_past: 1
+      skip_n: 1
+    multi_step:
+      n_past: 1
+      skip_n: ${paper.environments.${environment.name}.skip_n}
+
+post_eval:
+  enabled: true
+  rollout_steps: ${paper.environments.${environment.name}.rollout_steps}
+  n_test_states: ${paper.environments.${environment.name}.n_test_states}
+  n_noisy_samples: ${paper.environments.${environment.name}.n_noisy_samples}

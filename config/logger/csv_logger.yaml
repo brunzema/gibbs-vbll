@@ -1,0 +1,6 @@
+# Local, dependency-free metric logging. Files are written beneath cfg.save_dir.
+type: csv
+metrics_filename: training_metrics.csv
+horizon_filename: validation_by_horizon.csv
+summary_filename: run_summary.csv
+config_filename: run_config.yaml

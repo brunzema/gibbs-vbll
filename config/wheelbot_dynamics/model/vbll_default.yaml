@@ -1,0 +1,9 @@
+hidden_dims: [128, 128, 128]
+feature_dim: 64
+prior_scale: 1.0
+wishart_scale: 0.1
+
+# Keep compatibility with your existing wheelbot scripts.
+activation_fn_single_step: mish
+activation_fn_multi_step: mish
+

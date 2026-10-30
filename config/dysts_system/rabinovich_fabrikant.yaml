@@ -1,0 +1,9 @@
+name: rabinovich_fabrikant
+system_name: RabinovichFabrikant
+dt: 0.01
+parameters: null
+
+initial_state_bounds:
+  - [-1.71, -0.59]
+  - [0.00, 2.08]
+  - [0.11, 1.10]

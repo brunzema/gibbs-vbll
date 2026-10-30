@@ -1,0 +1,8 @@
+defaults:
+  - single_step_elbo
+  - _self_
+
+name: single_step_elbo_hbatch
+
+training:
+  batch_size: 10240  # 256 * H with H = 40 of the multi-step losses

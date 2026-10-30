@@ -1,0 +1,9 @@
+name: thomas
+system_name: Thomas
+dt: 0.02
+parameters: null
+
+initial_state_bounds:
+  - [-10.0, 10.0]
+  - [-10.0, 10.0]
+  - [-10.0, 10.0]

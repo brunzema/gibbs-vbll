@@ -1,0 +1,8 @@
+# Single-step ELBO with batch size 64 * H, so each gradient step sees as many
+# transitions as a multi-step batch of 64 windows of horizon H. The batch size
+# per environment is set by the experiment profile (paper).
+defaults:
+  - single_step_elbo
+  - _self_
+
+name: single_step_elbo_hbatch

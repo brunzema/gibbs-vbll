@@ -1,0 +1,16 @@
+# @package _global_
+defaults:
+  - override /hydra/launcher: submitit_slurm
+
+hydra:
+  callbacks:
+    log_job_return:
+      _target_: hydra.experimental.callbacks.LogJobReturnCallback
+  launcher:
+    timeout_min: 1380
+    cpus_per_task: 8
+    tasks_per_node: 1
+    mem_gb: 48
+    account: ${oc.env:SLURM_ACCOUNT,null}
+    array_parallelism: 20
+    submitit_folder: ${hydra.sweep.dir}/.submitit/%j

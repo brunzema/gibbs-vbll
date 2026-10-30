@@ -1,0 +1,39 @@
+# Multi-step ELBO training configuration (VBLLDeltaModel)
+#
+# Maximises E_{q(W)}[Σ_h γ^h log N(δ*_h; W^T φ(x*_h), Σ_ν)] - KL[q‖p].
+# Features are evaluated at true states (no rollout), giving low gradient
+# variance and stable training. Use with model=vbll_delta.
+name: multi_step_elbo
+
+# General training parameters
+n_epochs: 300
+learning_rate: 1.0e-3
+regularization_weight: 1.0  # Scaled by 1/n_train in runs/train.py
+batch_size: 64
+weight_decay: 1.0e-4
+clip_grad_norm: 1.0
+verbose: true
+print_every: 10
+
+# Device selection
+device: cpu
+
+# Multi-step specific parameters
+multi_step:
+  horizon: 40          # Prediction horizon H
+  n_samples: 10        # S: number of W samples for MC estimate of E_q[ℓ(W)]
+  n_val_samples: 100   # Samples for validation energy score
+
+  # Gamma tempering schedule
+  gamma_schedule:
+    type: constant
+    gamma_init: 1.0
+    gamma_final: 1.0
+    k: 10.0
+    transition_fraction: 0.67  # Fraction of training for gamma transition
+
+# Logging
+log_dir: logs
+
+# Validation
+val_every: 10

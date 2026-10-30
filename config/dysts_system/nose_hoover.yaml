@@ -1,0 +1,9 @@
+name: nose_hoover
+system_name: NoseHoover
+dt: 0.02
+parameters: null
+
+initial_state_bounds:
+  - [-2.71, 1.70]
+  - [-2.47, 2.49]
+  - [-3.01, 3.02]

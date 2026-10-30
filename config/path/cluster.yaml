@@ -1,0 +1,3 @@
+# path configuration
+name: base
+base_path: ???  # set to your results directory on the cluster

@@ -1,0 +1,9 @@
+name: lorenz84
+system_name: Lorenz84
+dt: 0.015
+parameters: null
+
+initial_state_bounds:
+  - [-2.46, 3.29]
+  - [-3.60, 5.64]
+  - [-5.86, 6.29]

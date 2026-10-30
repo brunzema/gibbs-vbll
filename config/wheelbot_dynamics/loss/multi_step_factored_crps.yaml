@@ -1,0 +1,15 @@
+name: multi_step_factored_crps
+mode: multi_step
+strategy: multi_step_factored_crps
+
+training:
+  n_epochs: 400
+  batch_size: 256
+  learning_rate: 5.0e-4
+  weight_decay: 1.0e-4
+  clip_grad_norm: 1.0
+  horizon: 40
+  skip_n: 20
+  n_samples: 10
+  n_val_samples: 100
+  gamma: 1.0

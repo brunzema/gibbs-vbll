@@ -1,0 +1,5 @@
+defaults:
+  - evaluation: paper
+  - _self_
+
+eval_environment: "variable_speed_limit_cycle"

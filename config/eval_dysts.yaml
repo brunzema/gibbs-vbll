@@ -1,0 +1,9 @@
+defaults:
+  - evaluation: paper
+  - _self_
+  - dysts_system: lorenz
+
+eval_environment: "dysts_${dysts_system.name}"
+
+eval:
+  skip_missing_models: true

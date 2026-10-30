@@ -1,0 +1,9 @@
+name: sprott_a
+system_name: SprottA
+dt: 0.015
+parameters: null
+
+initial_state_bounds:
+  - [-2.31, 2.52]
+  - [-2.46, 2.43]
+  - [-2.67, 2.59]

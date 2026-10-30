@@ -1,0 +1,9 @@
+name: rucklidge
+system_name: Rucklidge
+dt: 0.02
+parameters: null
+
+initial_state_bounds:
+  - [-9.04, 9.03]
+  - [-8.68, 9.06]
+  - [-4.01, 16.79]

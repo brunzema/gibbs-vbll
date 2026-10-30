@@ -1,0 +1,31 @@
+# Spiral dynamics environment configuration
+name: spiral
+normalize_states: false
+
+environment:
+  _target_: src.environments.spiral_dynamics.SpiralDynamics
+  dt: 0.1
+  noise_std: 0.01
+
+# State space bounds for initial state sampling
+initial_state_bounds:
+  - [-3.0, 3.0]  # x1 bounds
+  - [-3.0, 3.0]  # x2 bounds
+
+# ── Data / dataset settings ────────────────────────────────────────────────
+data:
+  trajectories:
+    n_trajectories: 300
+    traj_length: 50
+    test_fraction: 0.0
+    val_fraction: 0.2
+    deterministic: false
+
+  single_step:
+    n_future: 1
+    n_past: 1
+    skip_n: 1
+
+  multi_step:
+    n_past: 1
+    skip_n: 1              # horizon comes from training config

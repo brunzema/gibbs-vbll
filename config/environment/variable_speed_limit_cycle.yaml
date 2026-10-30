@@ -1,0 +1,48 @@
+# Variable-Speed Limit Cycle environment configuration
+#
+# A 2-D system with a stable limit cycle at radius R whose angular velocity
+# varies strongly with position:
+#
+#   omega(theta) = omega_0 * (1 + epsilon * sin(n_modes * theta))
+#
+# Default parameters give a 12x speed ratio between fast and slow zones,
+# creating conditions where multi-step training definitively outperforms
+# single-step training.  See VARIABLE_SPEED_LIMIT_CYCLE.md for details.
+name: variable_speed_limit_cycle
+normalize_states: false
+
+environment:
+  _target_: src.environments.VariableSpeedLimitCycleEnv
+  dt: 0.1
+  noise_std: 0.01
+  R: 1.0          # limit cycle radius
+  mu: 3.0         # radial attraction strength
+  omega_0: 2.0    # base angular velocity [rad/s]
+  epsilon: 0.85   # modulation depth → speed ratio (1+ε)/(1-ε) ≈ 12x
+  n_modes: 2      # number of fast/slow zone pairs per revolution
+
+# State space bounds for initial state sampling.
+# Wide bounds ensure the model sees both on-cycle and transient dynamics.
+initial_state_bounds:
+  - [-2.0, 2.0]  # x1 bounds
+  - [-2.0, 2.0]  # x2 bounds
+
+# ── Data / dataset settings ────────────────────────────────────────────────
+# Longer trajectories are important here: each trajectory must span multiple
+# full orbits so that both fast and slow zones are represented.
+data:
+  trajectories:
+    n_trajectories: 300    # total trajectories generated
+    traj_length: 50        # steps per trajectory (~2.5 orbits at ω₀=2 rad/s)
+    test_fraction: 0.0     # no held-out test split; all data used for train/val
+    val_fraction: 0.2      # 20 % validation
+    deterministic: false
+
+  single_step:
+    n_future: 1
+    n_past: 1
+    skip_n: 1
+
+  multi_step:
+    n_past: 1
+    skip_n: 1              # dense windows; horizon comes from training config

@@ -1,0 +1,40 @@
+# Glycolytic Oscillator environment configuration
+#
+# 7-dimensional stiff biochemical system (Daniels & Nemenman, 2015).
+# State magnitudes vary widely across dimensions, so normalization is required
+# for stable training.
+name: glycolytic_oscillator
+normalize_states: true
+
+environment:
+  _target_: src.environments.glycolytic_oscillator.GlycolyticOscillatorDynamics
+  dt: 0.01          # small dt required for stiff ODE
+  noise_std: 0.01
+
+# State space bounds for initial state sampling (STATE_LOW / STATE_HIGH from source)
+initial_state_bounds:
+  - [0.15, 1.60]   # x1 (S1)
+  - [0.19, 2.16]   # x2 (S2)
+  - [0.04, 0.20]   # x3 (S3)
+  - [0.10, 0.35]   # x4 (ATP)
+  - [0.08, 0.30]   # x5 (ADP)
+  - [0.14, 2.67]   # x6 (NADH)
+  - [0.05, 0.10]   # x7 (Pyruvate)
+
+# ── Data / dataset settings ────────────────────────────────────────────────
+data:
+  trajectories:
+    n_trajectories: 500
+    traj_length: 100   # dt * traj_length = 1 s per trajectory
+    test_fraction: 0.0
+    val_fraction: 0.2
+    deterministic: false
+
+  single_step:
+    n_future: 1
+    n_past: 1
+    skip_n: 1
+
+  multi_step:
+    n_past: 1
+    skip_n: 1          # horizon comes from training config

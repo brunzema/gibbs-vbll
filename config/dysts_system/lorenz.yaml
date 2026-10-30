@@ -1,0 +1,9 @@
+name: lorenz
+system_name: Lorenz
+dt: 0.01
+parameters: null
+
+initial_state_bounds:
+  - [-20.0, 20.0]
+  - [-30.0, 30.0]
+  - [0.0, 50.0]
